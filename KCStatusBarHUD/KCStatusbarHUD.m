@@ -125,6 +125,10 @@ static CGFloat const KCTitleImageMargin = 10.0;
  */
 +(void)hide{
     
+    // 停止定时器
+    [timer_ invalidate];
+    timer_ = nil;
+    
     [UIView animateWithDuration:KCAnimationDuration animations:^{
         
         CGRect beginRect = window_.frame;
@@ -132,8 +136,11 @@ static CGFloat const KCTitleImageMargin = 10.0;
         window_.frame = beginRect;
         
     } completion:^(BOOL finished) {
-        window_.hidden = YES;
-        window_ = nil;
+        
+        //定时器为空,说明没有创建新的窗口,若不为空,说明有有,那可以不清空
+        if (timer_ == nil) {
+            window_ = nil;
+        }
     }];
 }
 
